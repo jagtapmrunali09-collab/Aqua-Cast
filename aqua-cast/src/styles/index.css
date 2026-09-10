@@ -1,0 +1,116 @@
+@import 'leaflet-geosearch/dist/geosearch.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Surfaces */
+  --color-canvas: #ffffff;
+  --color-panel: #f8fafc;
+  --color-panel-raised: #f1f5f9;
+  --color-hairline: #e2e8f0;
+  --color-hairline-strong: #cbd5e1;
+
+  /* Text */
+  --color-ink: #0f172a;
+  --color-ink-muted: #475569;
+  --color-ink-faint: #94a3b8;
+
+  /* Water / primary accent */
+  --color-water-50: #f0f9ff;
+  --color-water-100: #e0f2fe;
+  --color-water-300: #7dd3fc;
+  --color-water-500: #0284c7;
+  --color-water-600: #026aa1;
+  --color-water-700: #0c4a6e;
+
+  /* Risk / severity scale — drives inundation depth coloring across
+     the map, metrics rail, and routing engine consistently */
+  --color-risk-normal: #059669;
+  --color-risk-caution: #d97706;
+  --color-risk-critical: #dc2626;
+
+  /* Layout constants */
+  --topbar-height: 56px;
+  --rail-width: 300px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Data readouts (rainfall intensity, water depth, pipe fill %) use the
+   monospace face throughout so figures stay tabular and scannable —
+   this mirrors how survey/engineering instrumentation displays numbers. */
+.data-readout {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Visible keyboard focus, kept subtle and consistent with the water accent */
+:focus-visible {
+  outline: 2px solid var(--color-water-500);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Leaflet container needs an explicit height inside flex layouts */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: var(--color-panel);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+}
+
+/* Smooth, non-jarring light/dark theme transition on the surfaces that
+   actually repaint — avoided on every element so the map/canvas doesn't
+   feel sluggish when the theme toggle fires. */
+body,
+header,
+aside,
+main,
+.theme-transition {
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+/* Dark-theme Leaflet chrome (popups, controls) — Leaflet ships its own
+   light-only styles, so these overrides keep the map legible at night
+   without needing a second tile provider swap for every UI chrome piece. */
+.dark .leaflet-popup-content-wrapper,
+.dark .leaflet-popup-tip {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+.dark .leaflet-control-zoom a {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #334155 !important;
+}
+.dark .leaflet-control-attribution {
+  background: rgba(15, 23, 42, 0.75);
+  color: #94a3b8;
+}
+.dark .leaflet-control-attribution a {
+  color: #7dd3fc;
+}
